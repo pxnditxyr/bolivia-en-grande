@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  web:
+    container_name: ${WEB_CONTAINER_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: web
+    ports:
+      - "${PORT}:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  mysql:
+    container_name: ${MYSQL_CONTAINER_NAME}
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASS}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - "./mysql:/var/lib/mysql"
+    networks:
+      - app-network
+
+  phpmyadmin:
+    container_name: ${PHPMYADMIN_CONTAINER_NAME}
+    image: phpmyadmin
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: "${MYSQL_PORT}"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS}
+      UPLOAD_LIMIT: 500M
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
