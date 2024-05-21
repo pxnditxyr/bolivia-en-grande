@@ -73,6 +73,46 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] === 'POST' ) {
         'lastname' => $lastname,
       ];
 
+      $htmlBody = "
+      <DOCTYPE html>
+      <html>
+      <head>
+        <title> Bienvenido a Bolivia en Grande </title>
+      </head>
+      <body>
+        <main style='width: 100%; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #f3f4f6;'>
+          <div style='width: 100%; max-width: 500px; background-color: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
+            <h1 style='font-size: 2rem; color: #333; text-align: center; margin-bottom: 20px;'> Bienvenido a Bolivia en Grande $name $lastname </h1>
+            <p style='color: #333; text-align: center; margin-bottom: 20px;'> Gracias por registrarte en nuestra plataforma. </p>
+            <p style='color: #333; text-align: center; margin-bottom: 20px;'> Por favor completa el contrato para la finalización de tu reserva. </p>
+          </div>
+        </main>
+      </body>
+      </html>
+      ";
+
+      $data = [
+        'to' => $email,
+        'subject' => 'Bienvenido a Bolivia en Grande',
+        'htmlBody' => $htmlBody,
+      ];
+
+      $curlHandle = curl_init( MAIL_URI );
+
+      curl_setopt( $curlHandle, CURLOPT_POST, true );
+      curl_setopt( $curlHandle, CURLOPT_POSTFIELDS, http_build_query( $data ) );
+      curl_setopt( $curlHandle, CURLOPT_RETURNTRANSFER, true );
+      $response = curl_exec( $curlHandle );
+
+      // if ( $response === false ) {
+      //   $error = curl_error( $curlHandle );
+      //   echo 'Error: ' . $error;
+      // } else {
+      //   echo $response;
+      // }
+
+      curl_close( $curlHandle );
+
       header( 'Location: ' . ROOT_PATH . '/' );
     } catch ( PDOException $e ) {
       $errorMessage = 'Ocurrió un error al intentar registrarte. Por favor, intenta nuevamente.';
