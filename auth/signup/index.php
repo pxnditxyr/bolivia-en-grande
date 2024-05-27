@@ -73,6 +73,8 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] === 'POST' ) {
         'lastname' => $lastname,
       ];
 
+      $link = LINK . '/contracts/matrimonial/?type=decorations';
+
       $htmlBody = "
       <DOCTYPE html>
       <html>
@@ -82,14 +84,19 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] === 'POST' ) {
       <body>
       <article style='width: 100%; height: 100vh; background-color: #f3f4f6;'>
         <section style='width: 100%; max-width: 500px; background-color: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
-          <h1 style='font-size: 2rem; color: #333; text-align: center; margin-bottom: 20px;'> Bienvenido a Bolivia en Grande $name $lastname </h1>
+          <h1 style='font-size: 2rem; color: #333; text-align: center; margin-bottom: 20px;'> Bienvenido a BOLIVIA EN GRANDE $name $lastname </h1>
           <img
             src='https://i.imgur.com/qSCgpvp.png'
             alt='Bolivia en Grande'
             style='width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 20px auto; display: block;'
           />
-          <p style='color: #333; text-align: center; margin-bottom:20px;'> Gracias por registrarte en nuestra plataforma. </p>
-          <p style='color: #333; text-align: center; margin-bottom:20px;'> Por favor completa el contrato para la finalización de tu reserva. </p>
+          <p style='color: #333; text-align: center; margin-bottom:20px; font-size:1.5rem;'> Gracias por registrarte en nuestra plataforma. </p>
+          <p style='color: #333; text-align: center; margin-bottom:20px; font-size:1.5rem'> Por favor completa el contrato para la finalización de tu reserva. </p>
+          <a
+            href='$link'
+            target='_blank'
+            style='display: block; width: 100%; padding: 12px 8px; background-color: #a3e635; color: #0f172a; text-align: center; text-decoration: none; border-radius: 8px;'
+          > Completar Contrato </a>
         </section>
       </article>
 
