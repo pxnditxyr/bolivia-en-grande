@@ -53,6 +53,55 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] === 'POST' ) {
             'name' => $customer[ 'name' ],
             'lastname' => $customer[ 'lastname' ],
           ];
+
+          $name = $customer[ 'name' ];
+          $lastname = $customer[ 'lastname' ];
+
+          $link = LINK . '/contracts/matrimonial/?type=decorations';
+
+          $htmlBody = "
+          <DOCTYPE html>
+          <html>
+          <head>
+            <title> Bienvenido a Bolivia en Grande </title>
+          </head>
+          <body>
+            <article style='width: 100%; height: 100vh; background-color: #f3f4f6;'>
+            <section style='width: 100%; max-width: 500px; background-color: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
+            <h1 style='font-size: 2rem; color: #333; text-align: center; margin-bottom: 20px;'> Bienvenido a BOLIVIA EN GRANDE $name $lastname </h1>
+            <img
+              src='https://i.imgur.com/qSCgpvp.png'
+              alt='Bolivia en Grande'
+              style='width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 20px auto; display: block;'
+            />
+            <p style='color: #333; text-align: center; margin-bottom:20px; font-size:1.5rem;'> Gracias por ingresar en nuestra plataforma. </p>
+            <p style='color: #333; text-align: center; margin-bottom:20px; font-size:1.5rem'> Por favor completa el contrato para la finalización de tu reserva. </p>
+            <a
+              href='$link'
+              target='_blank'
+              style='display: block; width: 100%; padding: 12px 8px; background-color: #a3e635; color: #0f172a; text-align: center; text-decoration: none; border-radius: 8px;'
+            > Completar Contrato </a>
+            </section>
+            </article>
+          </body>
+          </html>
+          ";
+
+          $data = [
+            'to' => $email,
+            'subject' => 'Bienvenido a Bolivia en Grande',
+            'htmlBody' => $htmlBody,
+          ];
+
+          $curlHandle = curl_init( MAIL_URI );
+
+          curl_setopt( $curlHandle, CURLOPT_POST, true );
+          curl_setopt( $curlHandle, CURLOPT_POSTFIELDS, http_build_query( $data ) );
+          curl_setopt( $curlHandle, CURLOPT_RETURNTRANSFER, true );
+          $response = curl_exec( $curlHandle );
+
+          curl_close( $curlHandle );
+
           header( 'Location: ' . ROOT_PATH . '/' );
         } else {
           $errorMessage .= 'El correo electrónico o la contraseña son incorrectos.';
